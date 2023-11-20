@@ -176,6 +176,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
             dxrr->izqder = 0;
             dxrr->arriaba = 0;
             dxrr->vel = 0;
+            dxrr->velIzqDer = 0;
 
             char keyboardData[256];
             m_pKeyboardDevice->GetDeviceState(sizeof(keyboardData), (void*)&keyboardData);
@@ -184,16 +185,41 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
                 dxrr->vel = -5.f;
             }
 
-
             if (keyboardData[DIK_W] & 0x80) {
                 dxrr->vel = 5.f;
             }
 
+            if (keyboardData[DIK_A] & 0x80){
+                dxrr->velIzqDer = 5.0f;
+            }
+
+            if (keyboardData[DIK_D] & 0x80){
+                dxrr->velIzqDer = -5.0f;
+            }
+
+            if (keyboardData[DIK_E] & 0x80) {
+                dxrr->isKeyboardActive = true;
+            }
+            else {
+                dxrr->isKeyboardActive = false;
+            }
             if (keyboardData[DIK_B] & 0x80) {
                 dxrr->breakpoint = true;
             }
+            if (keyboardData[DIK_Q] & 0x80) {
+                dxrr->tipoVista = false;
+            }
+            if (keyboardData[DIK_R] & 0x80) {
+                dxrr->tipoVista = true;
+            }
 
             if (keyboardData[DIK_ESCAPE] & 0x80) {
+                KillTimer(hWnd, 100);
+                PostQuitMessage(0);
+                return 0;
+            }
+
+            if (dxrr->tiempo <= 0) {
                 KillTimer(hWnd, 100);
                 PostQuitMessage(0);
                 return 0;

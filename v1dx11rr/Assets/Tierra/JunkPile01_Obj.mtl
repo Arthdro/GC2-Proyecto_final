@@ -1,0 +1,11 @@
+# Created with Anim8or 1.00
+# Object "Junk Pile 01":
+
+newmtl JunkPile01_Base
+Ka 0.165 0.165 0.165
+Kd 0.482 0.482 0.482
+Ks 0.694 0.694 0.694
+Ns 738.6
+map_Kd JunkPile01_Base-Diffuse3.png
+map_Ks JunkPile01_Base-Specular.png
+

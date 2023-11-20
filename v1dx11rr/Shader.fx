@@ -58,7 +58,7 @@ float4 PS_Main(PS_Input pix) : SV_TARGET
 {
 	float4 fColor = float4(1,0,0,1);
 
-	float3 ambient = float3(0.1f, 0.1f, 0.1f);
+	float3 ambient = float3(0.51f, 1.0f, 0.54f);
 
 	float4 text = colorMap.Sample(colorSampler, pix.tex0);
 	float4 text2 = colorMap2.Sample(colorSampler, pix.tex0);

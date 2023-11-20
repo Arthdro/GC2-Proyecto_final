@@ -10,7 +10,13 @@
       <FullPath>C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\x64\Debug\Billboard.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\x64\Debug\GUI.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\x64\Debug\Modelo.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\x64\Debug\Text.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />

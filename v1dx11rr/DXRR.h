@@ -10,6 +10,11 @@
 #include "Billboard.h"
 #include "ModeloRR.h"
 #include "XACT3Util.h"
+#include "GUI.h"
+#include "Text.h"
+#include "GamePadRR.h"
+#include <cstdlib>
+
 
 class DXRR {
 
@@ -37,16 +42,17 @@ public:
 	ID3D11BlendState* alphaBlendState, * commonBlendState;
 
 	int frameBillboard;
-
+	bool isActive;
+	bool isKeyboardActive;
 	TerrenoRR* terreno;
 	SkyDome* skydome;
 
-	BillboardRR* billboard;
-	BillboardRR* arbol;
+	BillboardRR* Billboard;
+	BillboardRR* arboles[50];
 
 	Camara* camara;
-	ModeloRR* model;
 
+	//Modelos
 	ModeloRR* gato_lampara;
 	ModeloRR* hielera;
 	ModeloRR* iphone;
@@ -55,29 +61,56 @@ public:
 	ModeloRR* silla_1;
 	ModeloRR* silla_2;
 	ModeloRR* nintendo_switch;
-
+	ModeloRR* bote;
+	ModeloRR* arma;
+	ModeloRR* lancha;
 	ModeloRR* building_1;
-	ModeloRR* building_2;
 	ModeloRR* building_3;
-	ModeloRR* building_4;
 	ModeloRR* building_5;
+	ModeloRR* dirt_pile[80];
 
-	//ModeloRR* arboles[10];
+	//Gui
+	GUI* vida[3];
+	GUI* pickedItems[4];
+	GUI* textGUI;
+	Text* texto;
+	Text* textoBlaco;
 
+
+	bool phonePicked = false;
+	bool catPicked = false;
+	bool bookPicked = false;
+	bool nwPicked = false;
+	bool boatPicked = false;
+	float boatCollision = 5.0f;
+	int placeX[50];
+	int placeZ[50];
+	float randomizer[80];
+	string mensaje;
 	float izqder;
 	float arriaba;
 	float vel;
+	float velIzqDer;
 	bool breakpoint;
 	vector2 uv1[32];
 	vector2 uv2[32];
 	vector2 uv3[32];
 	vector2 uv4[32];
 
+	int plusX = 490;
+	int minusX = -490;
+	int plusZ = 490;
+	int minusZ = -490;
 	XACTINDEX cueIndex;
 	CXACT3Util m_XACT3;
+
+	float tiempo;
+	bool tipoVista;
 	
     DXRR(HWND hWnd, int Ancho, int Alto)
 	{
+		isActive = false;
+		isKeyboardActive = false;
 		breakpoint = false;
 		frameBillboard = 0;
 		ancho = Ancho;
@@ -91,42 +124,73 @@ public:
 		IniciaD3D(hWnd);
 		izqder = 0;
 		arriaba = 0;
+		mensaje = "";
+		velIzqDer = 0.0;
 		//billCargaFuego();
 		camara = new Camara(D3DXVECTOR3(0,80,6), D3DXVECTOR3(0,80,0), D3DXVECTOR3(0,1,0), Ancho, Alto);
 		terreno = new TerrenoRR(1000, 1000, d3dDevice, d3dContext);
 		skydome = new SkyDome(32, 32, 100.0f, &d3dDevice, &d3dContext, L"SkyDome.jpg");
-		//skydome = new SkyDome(32, 32, 100.0f, &d3dDevice, &d3dContext, L"SkyDome_1.png");
-		//billboard = new BillboardRR(L"Assets/Billboards/fuego-anim.png",L"Assets/Billboards/fuego-anim-normal.png", d3dDevice, d3dContext, 10);
-		//billboard = new BillboardRR(L"Assets/Billboards/fuego-anim.png",L"Assets/Billboards/fuego-anim-normal.png", d3dDevice, d3dContext, 10);
-		arbol = new BillboardRR(L"Assets/Arbol/tree_texture.png", L"Assets/Arbol/NormalMap.png", d3dDevice, d3dContext, 5);
-		
-		//model = new ModeloRR(d3dDevice, d3dContext, "Assets/Cofre/Cofre.obj", L"Assets/Cofre/Cofre-color.png", L"Assets/Cofre/Cofre-spec.png", 0, 0);
+		tipoVista = false;
 
-		gato_lampara = new ModeloRR(d3dDevice, d3dContext, "Assets/Gato_lampara/CatLamp.obj", L"Assets/Gato_lampara/Textures/CatBody_Emissive.png", L"Assets/Gato_lampara/Textures/CatBody_Diffuse.png", 10, 10);
-		hielera = new ModeloRR(d3dDevice, d3dContext, "Assets/Hielera/Hielera.obj", L"Assets/Hielera/Hielera_Base.jpg", L"Assets/Hielera/Hielera_Spec.jpg", 20, 20);
-		iphone = new ModeloRR(d3dDevice, d3dContext, "Assets/Iphone/iPhone_X.obj", L"Assets/Iphone/textures/iPhone_X_D.png", L"Assets/Iphone/textures/iPhone_X_S.png", 30, 30);
-		libro_1 = new ModeloRR(d3dDevice, d3dContext, "Assets/Libro_1/OldBook001.obj", L"Assets/Libro_1/OldBook001_tex.png", L"Assets/Libro_1/SpecularMap.png", 0, 0);
-		libro_2 = new ModeloRR(d3dDevice, d3dContext, "Assets/Libro_2/OldBook002.obj", L"Assets/Libro_2/Textures/book_Old_book_BaseColor.png", L"Assets/Libro_2/Textures/book_Old book_Roughness.png", 40, 40);
-		silla_1 = new ModeloRR(d3dDevice, d3dContext, "Assets/Silla/SillaMadera.obj", L"Assets/Silla/SillaMadera_Base.jpg", L"Assets/Silla/SillaMadera_Spec.png", 50, 50);
-		silla_2 = new ModeloRR(d3dDevice, d3dContext, "Assets/Silla_Salvavidas/SillaSalvavidas.obj", L"Assets/Silla_Salvavidas/SillaSalv_Base.jpg", L"Assets/Silla_Salvavidas/SillaSalv_Spec.png", 60, 60);
-		nintendo_switch = new ModeloRR(d3dDevice, d3dContext, "Assets/Switch/nintendo_switch.obj", L"Assets/Switch/Textures/Nintendo_Switch_lambert1_BaseColor.png", L"Assets/Switch/Textures/Nintendo_Switch_lambert1_Roughness.png", 70, 70);	
+		for (int i = 0; i < 50; i++) {
+			placeX[i] = (rand() % 450) - 450;
+			placeZ[i] = (rand() % 450) - 450;
+			arboles[i] = new BillboardRR(L"Assets/Arbol/tree_texture.png", L"Assets/Arbol/NormalMap.png", 
+				d3dDevice, d3dContext, 20);
+		}
+	
+		gato_lampara = new ModeloRR(d3dDevice, d3dContext, "Assets/Gato_lampara/CatLamp.obj", L"Assets/Gato_lampara/Textures/CatBody_Emissive.png", L"Assets/Gato_lampara/Textures/CatBody_Diffuse.png", -125, -15, false);
+		hielera = new ModeloRR(d3dDevice, d3dContext, "Assets/Hielera/Hielera.obj", L"Assets/Hielera/Hielera_Base.jpg", L"Assets/Hielera/Hielera_Spec.jpg", -400, 210, false);
+		iphone = new ModeloRR(d3dDevice, d3dContext, "Assets/Iphone/iPhone_X.obj", L"Assets/Iphone/textures/iPhone_X_D.png", L"Assets/Iphone/textures/iPhone_X_S.png", 315, 345, false);
+		libro_1 = new ModeloRR(d3dDevice, d3dContext, "Assets/Libro_1/OldBook001.obj", L"Assets/Libro_1/OldBook001_tex.png", L"Assets/Libro_1/SpecularMap.png", 90, -400, false);
+		libro_2 = new ModeloRR(d3dDevice, d3dContext, "Assets/Libro_2/OldBook002.obj", L"Assets/Libro_2/Textures/book_Old_book_BaseColor.png", L"Assets/Libro_2/Textures/book_Old book_Roughness.png", 50, 50, false);
+		silla_1 = new ModeloRR(d3dDevice, d3dContext, "Assets/Silla/SillaMadera.obj", L"Assets/Silla/SillaMadera_Base.jpg", L"Assets/Silla/SillaMadera_Spec.png", 150, -200, false);
+		silla_2 = new ModeloRR(d3dDevice, d3dContext, "Assets/Silla_Salvavidas/SillaSalvavidas.obj", L"Assets/Silla_Salvavidas/SillaSalv_Base.jpg", L"Assets/Silla_Salvavidas/SillaSalv_Spec.png", 90, 415, false);
+		nintendo_switch = new ModeloRR(d3dDevice, d3dContext, "Assets/Switch/nintendo_switch.obj", L"Assets/Switch/Textures/Nintendo_Switch_lambert1_BaseColor.png", L"Assets/Switch/Textures/Nintendo_Switch_lambert1_Roughness.png", -230, -230, false);
+		bote = new ModeloRR(d3dDevice, d3dContext, "Assets/Bote/bote.obj", L"Assets/Bote/texture/bench_1_Base_color.png", L"Assets/Bote/texture/bench_1_Height.png", 80, 145, false);
+		arma = new ModeloRR(d3dDevice, d3dContext, "Assets/Arma/ak47.obj", L"Assets/Arma/textures/AK_Base_color.png", L"Assets/Arma/textures/AK_Roughness.png", -350, -410, false);
+		building_1 = new ModeloRR(d3dDevice, d3dContext, "Assets/Casa_ruinas_1/Casa_ruinas_1.obj", L"Assets/Casa_ruinas_1/AO.png", L"Assets/Casa_ruinas_1/roughnesshouse.png", 90, 254, false);
+		building_3 = new ModeloRR(d3dDevice, d3dContext, "Assets/Wood_house/Woodhouse.obj", L"Assets/Wood_house/WoodHouseDiffuse.png", L"Assets/Wood_house/WoodHouse_Specular.png", 448, 290, false);
+		building_5 = new ModeloRR(d3dDevice, d3dContext, "Assets/wood_tower/torreMadera.obj", L"Assets/wood_tower/SillaSalv_Base.jpg", L"Assets/wood_tower/SillaSalv_Spec.png", -240, 412, false);
+		for (int i = 0; i < 20; i++){
+			randomizer[i] = rand() % 359;
+			dirt_pile[i] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/JunkPile01_Obj.obj",
+				L"Assets/Tierra/JunkPile01_Base-Diffuse1.png", L"Assets/Tierra/JunkPile01_Base-Specular.png", minusX, plusZ, false);
+			minusX += 50;
+		}
+		minusX = -490;
+		for (int i = 20; i < 40; i++){
+			randomizer[i] = rand() % 359;
+			dirt_pile[i] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/JunkPile01_Obj.obj",
+				L"Assets/Tierra/JunkPile01_Base-Diffuse1.png", L"Assets/Tierra/JunkPile01_Base-Specular.png", plusX, plusZ, false);
+			plusZ -= 50;
+		}
+		plusZ = 490;
+		for (int i = 40; i < 60; i++) {
+			randomizer[i] = rand() % 359;
+			dirt_pile[i] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/JunkPile01_Obj.obj",
+				L"Assets/Tierra/JunkPile01_Base-Diffuse1.png", L"Assets/Tierra/JunkPile01_Base-Specular.png", plusX, minusZ, false);
+			plusX -= 50;
+		}
+		plusX = 490;
+		for (int i = 60; i < 80; i++) {
+			randomizer[i] = rand() % 359;
+			dirt_pile[i] = new ModeloRR(d3dDevice, d3dContext, "Assets/Tierra/JunkPile01_Obj.obj",
+				L"Assets/Tierra/JunkPile01_Base-Diffuse1.png", L"Assets/Tierra/JunkPile01_Base-Specular.png", minusX, minusZ, false);
+			minusZ += 50;
+		}
 
-		building_1 = new ModeloRR(d3dDevice, d3dContext, "Assets/Casa_ruinas_1/Casa_ruinas_1.obj", L"Assets/Casa_ruinas_1/AO.png", L"Assets/Casa_ruinas_1/roughnesshouse.png", 90, 254);
-		building_2 = new ModeloRR(d3dDevice, d3dContext, "Assets/Casa_ruinas_3/Old_Building.obj", L"Assets/Casa_ruinas_3/Old_Building_01.jpg", L"Assets/Casa_ruinas_3/Old_Building_01_Bump.jpg", 350, 170);
-		building_3 = new ModeloRR(d3dDevice, d3dContext, "Assets/Wood_house/Woodhouse.obj", L"Assets/Wood_house/WoodHouseDiffuse.png", L"Assets/Wood_house/WoodHouse_Specular.png", 448, 424);
-		//building_4 = new ModeloRR(d3dDevice, d3dContext, "Assets/Casa_ruinas_5/house.obj", L"Assets/Casa_ruinas_5/textures/Medieval_Brick_Texture_by_goodtextures.jpg", L"Assets/Casa_ruinas_5/textures/SpecularMap.png", 120, 120);
-		building_5 = new ModeloRR(d3dDevice, d3dContext, "Assets/wood_tower/torreMadera.obj", L"Assets/wood_tower/SillaSalv_Base.jpg", L"Assets/wood_tower/SillaSalv_Spec.png", 340, 462);
-
-		/*arboles[0] = new ModeloRR(d3dDevice, d3dContext, "Assets/Arbol/cedar_tree_fan.obj", L"Assets/Arbol/cedar_fan.png", L"Assets/Arbol/SpecularMap.png", 140, 140);
-		arboles[1] = new ModeloRR(d3dDevice, d3dContext, "Assets/Arbol/cedar_tree_fan.obj", L"Assets/Arbol/cedar_fan.png", L"Assets/Arbol/SpecularMap.png", 150, 150);
-		arboles[2] = new ModeloRR(d3dDevice, d3dContext, "Assets/Arbol/cedar_tree_fan.obj", L"Assets/Arbol/cedar_fan.png", L"Assets/Arbol/SpecularMap.png", 160, 160);
-		arboles[3] = new ModeloRR(d3dDevice, d3dContext, "Assets/Arbol/cedar_tree_fan.obj", L"Assets/Arbol/cedar_fan.png", L"Assets/Arbol/SpecularMap.png", 170, 170);
-		arboles[4] = new ModeloRR(d3dDevice, d3dContext, "Assets/Arbol/cedar_tree_fan.obj", L"Assets/Arbol/cedar_fan.png", L"Assets/Arbol/SpecularMap.png", 180, 180);
-		arboles[5] = new ModeloRR(d3dDevice, d3dContext, "Assets/Arbol/cedar_tree_fan.obj", L"Assets/Arbol/cedar_fan.png", L"Assets/Arbol/SpecularMap.png", 190, 190);
-		arboles[6] = new ModeloRR(d3dDevice, d3dContext, "Assets/Arbol/cedar_tree_fan.obj", L"Assets/Arbol/cedar_fan.png", L"Assets/Arbol/SpecularMap.png", 200, 200);
-		arboles[7] = new ModeloRR(d3dDevice, d3dContext, "Assets/Arbol/cedar_tree_fan.obj", L"Assets/Arbol/cedar_fan.png", L"Assets/Arbol/SpecularMap.png", 210, 210);
-		arboles[8] = new ModeloRR(d3dDevice, d3dContext, "Assets/Arbol/cedar_tree_fan.obj", L"Assets/Arbol/cedar_fan.png", L"Assets/Arbol/SpecularMap.png", 220, 220);
-		arboles[9] = new ModeloRR(d3dDevice, d3dContext, "Assets/Arbol/cedar_tree_fan.obj", L"Assets/Arbol/cedar_fan.png", L"Assets/Arbol/SpecularMap.png", 230, 230);*/
+		vida[0] = new GUI(d3dDevice, d3dContext, 0.15, 0.25, L"Assets/GUI/health_full.png");
+		vida[1] = new GUI(d3dDevice, d3dContext, 0.15, 0.25, L"Assets/GUI/health_2.png");
+		vida[2] = new GUI(d3dDevice, d3dContext, 0.15, 0.25, L"Assets/GUI/health_1.png");
+		pickedItems[0] = new GUI(d3dDevice, d3dContext, 0.11, 0.06, L"Assets/Items/cat_icon.png");
+		pickedItems[1] = new GUI(d3dDevice, d3dContext, 0.11, 0.06, L"Assets/Items/book_icon.png");
+		pickedItems[2] = new GUI(d3dDevice, d3dContext, 0.11, 0.06, L"Assets/Items/nw_icon.png");
+		pickedItems[3] = new GUI(d3dDevice, d3dContext, 0.11, 0.06, L"Assets/Items/phone_icon.png");
+		textGUI = new GUI(d3dDevice, d3dContext, 0.5, 1.5, L"Assets/GUI/DSI-Text_GUI.png");
+		textoBlaco = new Text(d3dDevice, d3dContext, 2.0, 1.0, L"Assets/GUI/font_v2.png", XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f));
+		texto = new Text(d3dDevice, d3dContext, 2.0, 1.0, L"Assets/GUI/font.png", XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f));
+		tiempo = 300;
 	}
 
 	~DXRR()
@@ -194,7 +258,6 @@ public:
 
 		if(FAILED(result))
 		{
-
 			//Error al crear el Direct3D device
 			return false;
 		}
@@ -294,6 +357,7 @@ public:
 	void Render(void)
 	{
 		float sphere[3] = { 0,0,0 };
+		boatCollision = 3.0f;
 		float prevPos[3] = { camara->posCam.x, camara->posCam.z, camara->posCam.z };
 		static float angle = 0.0f;
 		angle += 0.005;
@@ -306,31 +370,169 @@ public:
 		d3dContext->ClearRenderTargetView( backBufferTarget, clearColor );
 		d3dContext->ClearDepthStencilView( depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0 );
 		camara->posCam.y = terreno->Superficie(camara->posCam.x, camara->posCam.z) + 5 ;
+		camara->posCam3p.y = terreno->Superficie(camara->posCam3p.x, camara->posCam3p.z) + 10;
 
 #pragma region Collisions
 		//Gato lampara
-		bool collision = isPointInsideSphere(camara->getPoint(), gato_lampara->getSphere(10));
-		if (!collision) {
-			camara->UpdateCam(vel, arriaba, izqder);
-			//collision = true;
+		//bool collisionGL = isPointInsideSphere(camara->getPoint(), gato_lampara->getSphere(3));
+		if (!isPointInsideSphere(camara->getPoint(), gato_lampara->getSphere(7)) ) {
+			gato_lampara->isActive = false;
 		}
 		else {
 			camara->posCam = camara->posCamPast;
+			gato_lampara->isActive = true;
+			mensaje = "Es una lampara gato. Presiona [E] para recoger el objeto.";
+			if (gato_lampara->isActive && isKeyboardActive) {
+				mensaje = "Es un gato. Si hubiera baterias, podria encenderlo.";			
+				catPicked = true;
+			}
 		}
 
 		//Iphone
-		collision = isPointInsideSphere(camara->getPoint(), iphone->getSphere(5));
-		if (!collision) {
-			camara->UpdateCam(vel, arriaba, izqder);
-			//collision = true;
+		//bool collisionP = isPointInsideSphere(camara->getPoint(), iphone->getSphere(3));
+		if (!isPointInsideSphere(camara->getPoint(), iphone->getSphere(7))) {
+			iphone->isActive = false;
 		}
 		else {
 			camara->posCam = camara->posCamPast;
+			iphone->isActive = true;
+			mensaje = "Es un celular. Presiona [E] para recoger el objeto.";
+			if (iphone->isActive && isKeyboardActive) {
+				mensaje = "Es un celular.";
+				phonePicked = true;
+			}	
 		}
+
+		////Libro
+		//bool collisionL = isPointInsideSphere(camara->getPoint(), libro_1->getSphere(3));
+		if (!isPointInsideSphere(camara->getPoint(), libro_1->getSphere(5))){
+			libro_1->isActive = false;
+		}
+		else {
+			camara->posCam = camara->posCamPast;
+			libro_1->isActive = true;
+			mensaje = "Es un libro. Presiona [E] para recoger el objeto.";
+			if (libro_1->isActive && isKeyboardActive){
+				mensaje = "Es un libro viejo. Tenía una nota para una persona...";
+				bookPicked = true;
+			}
+		}
+
+		//Nintendo Switch
+		if (!isPointInsideSphere(camara->getPoint(), nintendo_switch->getSphere(7))) {
+			nintendo_switch->isActive = false;
+		}
+		else {
+			camara->posCam = camara->posCamPast;
+			nintendo_switch->isActive = true;
+			mensaje = "Es una consola de videojuegos. Presiona [E] para recoger el objeto.";
+			if (nintendo_switch->isActive && isKeyboardActive) {
+				mensaje = "Parece tener aun poca bateria. Al revisar ";
+				nwPicked = true;
+			}
+		}
+
+		//Hielera
+		if (!isPointInsideSphere(camara->getPoint(), hielera->getSphere(8))) {
+			hielera->isActive = false;
+		}
+		else {
+			camara->posCam = camara->posCamPast;
+			hielera->isActive = true;
+			mensaje = "Es una hielera. Presiona [E] para abrirla el objeto.";
+			if (hielera->isActive && isKeyboardActive) {
+				mensaje = "Contiene restos de comida. Huele bastante mal... ";
+			}
+		}
+
+		//Silla_1
+		silla_1;
+		if (!isPointInsideSphere(camara->getPoint(), silla_1->getSphere(8))) {
+			silla_1->isActive = false;
+		}
+		else {
+			camara->posCam = camara->posCamPast;
+			silla_1->isActive = true;
+			mensaje = "Es una sila de madera. Presiona [E] para investigarla el objeto.";
+			if (silla_1->isActive && isKeyboardActive) {
+				mensaje = "No parece contener nada especial... ";
+			}
+		}
+
+		//Bote
+		if (boatCollision != 0.0f)		{
+			if (!isPointInsideSphere(camara->getPoint(), bote->getSphere(5))) {
+				bote->isActive = false;
+			}
+			else {
+				camara->posCam = camara->posCamPast;
+				bote->isActive = true;
+				mensaje = "Es un bote de madera. Presiona [E] para subirte en el.";
+				if (bote->isActive && isKeyboardActive) {
+					boatCollision = 0.0f;
+					boatPicked = true;
+				}
+			}
+		}		
+
+		//Arma 
+		if (!isPointInsideSphere(camara->getPoint(), arma->getSphere(8))) {
+			arma->isActive = false;
+		}
+		else {
+			camara->posCam = camara->posCamPast;
+			arma->isActive = true;
+			mensaje = "Es un arma vieja. Presiona [E] para investigarla.";
+			if (arma->isActive && isKeyboardActive) {
+				mensaje = "No parece contener nada especial... ";
+			}
+		}
+
+		//Libro 2 
+		if (!isPointInsideSphere(camara->getPoint(), libro_2->getSphere(5))) {
+			libro_2->isActive = false;
+		}
+		else {
+			camara->posCam = camara->posCamPast;
+			libro_2->isActive = true;
+			mensaje = "Parece un libro viejo. Presiona [E] para investigarla.";
+			if (libro_2->isActive && isKeyboardActive) {
+				mensaje = "Sus paginas estan arrancadas. Parece ser un libro de fisica.";
+			}
+		}
+
+		//Silla_2
+		if (!isPointInsideSphere(camara->getPoint(), silla_2->getSphere(8))) {
+			silla_2->isActive = false;
+		}
+		else {
+			camara->posCam = camara->posCamPast;
+			silla_2->isActive = true;
+			mensaje = "Parece una silla. Presiona [E] para investigarla.";
+			if (silla_2->isActive && isKeyboardActive) {
+				mensaje = "Parece rota y muy vieja. No parace contener nada.";
+			}
+		}
+
+		//Montañas
+		for (int i = 0; i < 80; i++){
+			if (!isPointInsideSphere(camara->getPoint(), dirt_pile[i]->getSphere(40))) {
+				dirt_pile[i]->isActive = false;
+			}
+			else {
+				camara->posCam = camara->posCamPast;
+				dirt_pile[i]->isActive = true;
+				mensaje = "No puedes escalar la montania...";
+			}
+		}
+
+		if (!libro_1->isActive || !iphone->isActive || !gato_lampara->isActive || !nintendo_switch->isActive || !silla_2->isActive
+			|| !silla_1->isActive || !hielera->isActive || !bote->isActive || !arma->isActive || !libro_2->isActive)
+				camara->UpdateCam(vel, velIzqDer, arriaba, izqder);
+		
 
 #pragma endregion
 
-		//
 		//camara->UpdateCam(vel, arriaba, izqder);
 		skydome->Update(camara->vista, camara->proyeccion);
 
@@ -343,38 +545,71 @@ public:
 		//TurnOnAlphaBlending();
 		//billboard->Draw(camara->vista, camara->proyeccion, camara->posCam,
 			//-11, -78, 4, 5, uv1, uv2, uv3, uv4, frameBillboard);
-		arbol->Draw(camara->vista, camara->proyeccion, camara->posCam, 0, 0, 
-			terreno->Superficie(0, 0), 5, false);
+		/*arbol->Draw(camara->vista, camara->proyeccion, camara->posCam, 0, 0, 
+			terreno->Superficie(0, 0), 5, false);*/
+		for (int i = 0; i < 50; i++) {
+			arboles[i]->Draw(camara->vista, camara->proyeccion, camara->posCam, this->placeX[i], this->placeZ[i],
+				terreno->Superficie(0, 0) - 3, 15, tipoVista);
+		}
 
-		//TurnOffAlphaBlending();
-		//model->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
-		gato_lampara->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 0.25);
-		hielera->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 0.25);
-		iphone->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 0.25);
-		libro_1->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 0.75);
-		libro_2->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 3);
-		silla_1->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 0.25);
-		silla_2->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 0.25);
-		nintendo_switch->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);
+		gato_lampara->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) + 5, camara->posCam, 10.0f, 0, 'A', 0.25);
+		hielera->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) - 1, camara->posCam, 10.0f, 0, 'A', 0.25);
+		iphone->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) + 2, camara->posCam, 10.0f, 120, 'X', 0.25);
+		libro_1->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) - 5, camara->posCam, 10.0f, 0, 'A', 0.75);
+		libro_2->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) - 1.2, camara->posCam, 10.0f, 0, 'A', 3);
+		silla_1->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) + 2, camara->posCam, 10.0f, 0, 'A', 0.25);
+		silla_2->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) - 10, camara->posCam, 10.0f, 0, 'A', 0.25);
+		nintendo_switch->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) - 1, camara->posCam, 10.0f, 90, 'Z', 1);
+		bote->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) - 1, camara->posCam, 10.0f, 0, 'A', 2);
+		arma->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 120, 'X', 1);
+		for (int j = 0; j < 80; j++){
+			dirt_pile[j]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) - 11, camara->posCam, 10.0f, randomizer[j], 'Y', 1);
+		}
 
-		building_1->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) - 5, camara->posCam, 10.0f, 0, 'A', 5);;
-		//building_2->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);;
-		building_3->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) - 8, camara->posCam, 10.0f, 0, 'A', 5);;
-		//building_4->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);;
-		building_5->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) - 5, camara->posCam, 10.0f, 0, 'A', 5);;
+		building_1->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) - 20, camara->posCam, 10.0f, 0, 'A', 5);
+		building_3->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) - 8, camara->posCam, 10.0f, 0, 'A', 5);
+		building_5->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) - 5, camara->posCam, 10.0f, 0, 'A', 5);
 
-		/*arboles[0]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);;
-		arboles[1]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);;
-		arboles[2]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);;
-		arboles[3]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);;
-		arboles[4]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);;
-		arboles[5]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);;
-		arboles[6]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);;
-		arboles[7]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);;
-		arboles[8]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);;
-		arboles[9]->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20), camara->posCam, 10.0f, 0, 'A', 1);;*/
+		tiempo -= 0.01;
+		vida[0]->Draw(-0.8, 0.8);
+
+		//Objetivos logrados
+		if (catPicked) {
+			pickedItems[0]->Draw(-0.8, 0.6);
+		}
+		if (bookPicked) {
+			pickedItems[1]->Draw(-0.7, 0.6);
+		}
+		if (nwPicked) {
+			pickedItems[2]->Draw(-0.6, 0.6);
+		}
+		if (phonePicked) {
+			pickedItems[3]->Draw(-0.9, 0.6);
+		}
+
+		/*if (catPicked && bookPicked && nwPicked && phonePicked) {
+
+		}*/
+		//Dibujo el vehículo
+		/*if (boatPicked) {
+			 lancha->setPosX(camara->hdveo.x);
+			 lancha->setPosZ(camara->hdveo.z);
+			 lancha->Draw(camara->vista, camara->proyeccion, 
+				 terreno->Superficie(bote->getPosX(), bote->getPosZ()), camara->posCam, 30.0f, XM_PI, 'Y', 5, true, tipoVista);
+		}*/
+
+		//Dibujo de GUI y mensajes
+		TurnOnAlphaBlending();
+		texto->DrawText(-0.9f, 0.9f, "Vida: ", 0.009f);
+		textoBlaco->DrawText(-0.8f, -0.3f, mensaje, 0.009f);
+		if (gato_lampara->isActive || iphone->isActive || libro_1->isActive || nintendo_switch->isActive || silla_2->isActive
+			 || silla_1->isActive || hielera->isActive || bote->isActive || arma->isActive || libro_2->isActive)
+				textGUI->Draw(-0.2f, -0.3f);
+		texto->DrawText(0.2f, 0.8f, "Tiempo: " + texto->Time(tiempo), 0.009f);
+		TurnOffAlphaBlending();
 
 		swapChain->Present( 1, 0 );
+		mensaje = "";
 	}
 
 	bool isPointInsideSphere(float* point, float* sphere) {
@@ -384,11 +619,10 @@ public:
 			(point[1] - sphere[1]) * (point[1] - sphere[1])) /* +
 			(point[1] - sphere[1]) * (point[1] - sphere[1]))*/;
 
-		if (distance < sphere[2])
+		if (distance <= sphere[2])
 			collition = true;
 		return collition;
 	}
-
 	//Activa el alpha blend para dibujar con transparencias
 	void TurnOnAlphaBlending()
 	{
@@ -419,7 +653,6 @@ public:
 
 		d3dContext->OMSetBlendState(alphaBlendState, blendFactor, 0xffffffff);
 	}
-
 	//Regresa al blend normal(solido)
 	void TurnOffAlphaBlending()
 	{

@@ -73,12 +73,26 @@ private:
 	float posZ;
 
 public:
+	bool isActive;
 	ModeloRR(ID3D11Device* D3DDevice, ID3D11DeviceContext* D3DContext, char* ModelPath, WCHAR* colorTexturePath, WCHAR* specularTexturePath, float _posX, float _posZ)
 	{
 		//copiamos el device y el device context a la clase terreno
 		d3dContext = D3DContext;
 		d3dDevice = D3DDevice;	
 
+		posX = _posX;
+		posZ = _posZ;
+
+		//aqui cargamos las texturas de alturas y el cesped
+		CargaParametros(ModelPath, colorTexturePath, specularTexturePath);//L"Assets/Tent-Tower/tent_diffuse.jpg"
+	}
+
+	ModeloRR(ID3D11Device* D3DDevice, ID3D11DeviceContext* D3DContext, char* ModelPath, WCHAR* colorTexturePath, WCHAR* specularTexturePath, float _posX, float _posZ, bool _isActive = false)
+	{
+		//copiamos el device y el device context a la clase terreno
+		d3dContext = D3DContext;
+		d3dDevice = D3DDevice;
+		isActive = _isActive;
 		posX = _posX;
 		posZ = _posZ;
 
@@ -99,6 +113,14 @@ public:
 	
 	float getPosZ() {
 		return this->posZ;
+	}
+
+	void setPosX(float _posX) {
+		this->posX = _posX;
+	}
+
+	void setPosZ(float _posZ) {
+		this->posZ = _posZ;
 	}
 
 	float* getSphere(float radio) {
@@ -349,6 +371,7 @@ public:
 		worldCB = 0;
 		cameraPosCB = 0;
 		specForceCB = 0;
+		//return;
 	}
 
 	void Update(float dt)
@@ -356,7 +379,8 @@ public:
 
 	}
 
-	void Draw(D3DXMATRIX vista, D3DXMATRIX proyeccion, float ypos, D3DXVECTOR3 posCam, float specForce, float rot, char angle, float scale)
+	void Draw(D3DXMATRIX vista, D3DXMATRIX proyeccion, float ypos, D3DXVECTOR3 posCam, 
+		float specForce, float rot, char angle, float scale , bool sigueCamara = false, bool tipoCamara = true)
 	{
 		static float rotation = 0.0f;
 		rotation += 0.01;
@@ -392,6 +416,21 @@ public:
 		D3DXMatrixRotationYawPitchRoll(&rotationMat, 0.0f, 0.0f, 0.0f);
 		D3DXMATRIX translationMat;
 		D3DXMatrixTranslation(&translationMat, posX, ypos, posZ);
+		D3DXMATRIX ajusteSigueCamara;
+		if (!tipoCamara){
+			D3DXMatrixTranslation(&ajusteSigueCamara, -0.2, 0.0, -0.6);
+		}
+		else {
+			D3DXMatrixTranslation(&ajusteSigueCamara, 0.0, 0.0, 5.0);
+		}
+		
+		//if (sigueCamara) {
+		//	D3DXMatrixTranslation(&translationMat, posX, ypos, posZ);
+		//}
+		//else {
+		//	D3DXMatrixTranslation(&translationMat, posX, ypos, posZ);
+		//}
+		//Se comenta lo de abajo
 		if(angle == 'X')
 			D3DXMatrixRotationX(&rotationMat, rot);
 		else if (angle == 'Y')
@@ -403,7 +442,14 @@ public:
 		D3DXMATRIX scaleMat;
 		D3DXMatrixScaling(&scaleMat, scale,scale,scale);
 
-		D3DXMATRIX worldMat = rotationMat * scaleMat * translationMat;
+
+		D3DXMATRIX worldMat;
+		if (sigueCamara) {
+			worldMat = scaleMat * rotationMat * translationMat;
+		}
+		else {
+			worldMat = scaleMat * ajusteSigueCamara * rotationMat * translationMat;
+		}
 		D3DXMatrixTranspose(&worldMat, &worldMat);
 		//actualiza los buffers del shader
 		d3dContext->UpdateSubresource(worldCB, 0, 0, &worldMat, 0, 0);
