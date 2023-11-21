@@ -49,6 +49,9 @@ public:
 
 	BillboardRR* Billboard;
 	BillboardRR* arboles[50];
+	BillboardRR* arbusto1[50];
+	BillboardRR* arbusto2[50];
+	BillboardRR* arbusto3[50];
 
 	Camara* camara;
 
@@ -83,8 +86,16 @@ public:
 	bool nwPicked = false;
 	bool boatPicked = false;
 	float boatCollision = 5.0f;
+
 	int placeX[50];
 	int placeZ[50];
+	int placeXG1[50];
+	int placeZG1[50];
+	int placeXG2[50];
+	int placeZG2[50];
+	int placeXG3[50];
+	int placeZG3[50];
+
 	float randomizer[80];
 	string mensaje;
 	float izqder;
@@ -101,11 +112,15 @@ public:
 	int minusX = -490;
 	int plusZ = 490;
 	int minusZ = -490;
+
 	XACTINDEX cueIndex;
+	XACTINDEX collisionSound;
+	XACTINDEX footstepsSound;
 	CXACT3Util m_XACT3;
 
 	float tiempo;
 	bool tipoVista;
+	bool audioTerminado;
 	
     DXRR(HWND hWnd, int Ancho, int Alto)
 	{
@@ -135,7 +150,19 @@ public:
 		for (int i = 0; i < 50; i++) {
 			placeX[i] = (rand() % 450) - 450;
 			placeZ[i] = (rand() % 450) - 450;
+			placeXG1[i] = (rand() % 450) - 450;
+			placeZG1[i] = (rand() % 450) - 450;
+			placeXG2[i] = (rand() % 450) - 450;
+			placeZG2[i] = (rand() % 450) - 450;
+			placeXG3[i] = (rand() % 450) - 450;
+			placeZG2[i] = (rand() % 450) - 450;
 			arboles[i] = new BillboardRR(L"Assets/Arbol/tree_texture.png", L"Assets/Arbol/NormalMap.png", 
+				d3dDevice, d3dContext, 20);
+			arbusto1[i] = new BillboardRR(L"Assets/Cesped/grass.png", L"Assets/Cesped/GrassNormal.png",
+				d3dDevice, d3dContext, 20);
+			arbusto2[i] = new BillboardRR(L"Assets/Cesped/grass2.png", L"Assets/Cesped/Grass2Normal.png",
+				d3dDevice, d3dContext, 20);
+			arbusto3[i] = new BillboardRR(L"Assets/Cesped/grass3.png", L"Assets/Cesped/Grass3Normal.png",
 				d3dDevice, d3dContext, 20);
 		}
 	
@@ -191,6 +218,7 @@ public:
 		textoBlaco = new Text(d3dDevice, d3dContext, 2.0, 1.0, L"Assets/GUI/font_v2.png", XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f));
 		texto = new Text(d3dDevice, d3dContext, 2.0, 1.0, L"Assets/GUI/font.png", XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f));
 		tiempo = 300;
+		audioTerminado = false;
 	}
 
 	~DXRR()
@@ -201,6 +229,7 @@ public:
 	
 	bool IniciaD3D(HWND hWnd)
 	{
+
 		this->hInstance = hInstance;
 		this->hWnd = hWnd;
 
@@ -327,8 +356,26 @@ public:
 
 		d3dContext->OMSetRenderTargets(1, &backBufferTarget, depthStencilView);
 
-		return true;			
-		
+		//Audio
+		bool res = m_XACT3.Initialize();
+		if (!res)
+			return res;
+
+		res = m_XACT3.LoadWaveBank(L"Assets\\Sonido\\Win\\Wave_Bank.xwb");
+		if (!res)
+			return res;
+
+		res = m_XACT3.LoadSoundBank(L"Assets\\Sonido\\Win\\Sound_Bank.xsb");
+		if (!res)
+			return res;
+
+		//Reproducir audio
+		cueIndex = m_XACT3.m_pSoundBank->GetCueIndex("background01");
+		collisionSound = m_XACT3.m_pSoundBank->GetCueIndex("colission02");;
+		footstepsSound = m_XACT3.m_pSoundBank->GetCueIndex("footsteps01");;
+		m_XACT3.m_pSoundBank->Play(cueIndex, 0, 0, 0);
+
+		return true;				
 	}
 
 	void LiberaD3D(void)
@@ -380,6 +427,10 @@ public:
 		}
 		else {
 			camara->posCam = camara->posCamPast;
+			if (!audioTerminado){
+				m_XACT3.m_pSoundBank->Play(collisionSound, 0, 0, 0);
+				audioTerminado = true;
+			}			
 			gato_lampara->isActive = true;
 			mensaje = "Es una lampara gato. Presiona [E] para recoger el objeto.";
 			if (gato_lampara->isActive && isKeyboardActive) {
@@ -395,6 +446,10 @@ public:
 		}
 		else {
 			camara->posCam = camara->posCamPast;
+			if (!audioTerminado) {
+				m_XACT3.m_pSoundBank->Play(collisionSound, 0, 0, 0);
+				audioTerminado = true;
+			}
 			iphone->isActive = true;
 			mensaje = "Es un celular. Presiona [E] para recoger el objeto.";
 			if (iphone->isActive && isKeyboardActive) {
@@ -410,6 +465,10 @@ public:
 		}
 		else {
 			camara->posCam = camara->posCamPast;
+			if (!audioTerminado) {
+				m_XACT3.m_pSoundBank->Play(collisionSound, 0, 0, 0);
+				audioTerminado = true;
+			}
 			libro_1->isActive = true;
 			mensaje = "Es un libro. Presiona [E] para recoger el objeto.";
 			if (libro_1->isActive && isKeyboardActive){
@@ -424,6 +483,10 @@ public:
 		}
 		else {
 			camara->posCam = camara->posCamPast;
+			if (!audioTerminado) {
+				m_XACT3.m_pSoundBank->Play(collisionSound, 0, 0, 0);
+				audioTerminado = true;
+			}
 			nintendo_switch->isActive = true;
 			mensaje = "Es una consola de videojuegos. Presiona [E] para recoger el objeto.";
 			if (nintendo_switch->isActive && isKeyboardActive) {
@@ -438,6 +501,10 @@ public:
 		}
 		else {
 			camara->posCam = camara->posCamPast;
+			if (!audioTerminado) {
+				m_XACT3.m_pSoundBank->Play(collisionSound, 0, 0, 0);
+				audioTerminado = true;
+			}
 			hielera->isActive = true;
 			mensaje = "Es una hielera. Presiona [E] para abrirla el objeto.";
 			if (hielera->isActive && isKeyboardActive) {
@@ -452,6 +519,10 @@ public:
 		}
 		else {
 			camara->posCam = camara->posCamPast;
+			if (!audioTerminado) {
+				m_XACT3.m_pSoundBank->Play(collisionSound, 0, 0, 0);
+				audioTerminado = true;
+			}
 			silla_1->isActive = true;
 			mensaje = "Es una sila de madera. Presiona [E] para investigarla el objeto.";
 			if (silla_1->isActive && isKeyboardActive) {
@@ -465,7 +536,11 @@ public:
 				bote->isActive = false;
 			}
 			else {
-				camara->posCam = camara->posCamPast;
+				//camara->posCam = camara->posCamPast;
+				if (!audioTerminado) {
+					m_XACT3.m_pSoundBank->Play(collisionSound, 0, 0, 0);
+					audioTerminado = true;
+				}
 				bote->isActive = true;
 				mensaje = "Es un bote de madera. Presiona [E] para subirte en el.";
 				if (bote->isActive && isKeyboardActive) {
@@ -481,6 +556,10 @@ public:
 		}
 		else {
 			camara->posCam = camara->posCamPast;
+			if (!audioTerminado) {
+				m_XACT3.m_pSoundBank->Play(collisionSound, 0, 0, 0);
+				audioTerminado = true;
+			}
 			arma->isActive = true;
 			mensaje = "Es un arma vieja. Presiona [E] para investigarla.";
 			if (arma->isActive && isKeyboardActive) {
@@ -494,6 +573,10 @@ public:
 		}
 		else {
 			camara->posCam = camara->posCamPast;
+			if (!audioTerminado) {
+				m_XACT3.m_pSoundBank->Play(collisionSound, 0, 0, 0);
+				audioTerminado = true;
+			}
 			libro_2->isActive = true;
 			mensaje = "Parece un libro viejo. Presiona [E] para investigarla.";
 			if (libro_2->isActive && isKeyboardActive) {
@@ -507,6 +590,10 @@ public:
 		}
 		else {
 			camara->posCam = camara->posCamPast;
+			if (!audioTerminado) {
+				m_XACT3.m_pSoundBank->Play(collisionSound, 0, 0, 0);
+				audioTerminado = true;
+			}
 			silla_2->isActive = true;
 			mensaje = "Parece una silla. Presiona [E] para investigarla.";
 			if (silla_2->isActive && isKeyboardActive) {
@@ -548,11 +635,18 @@ public:
 		/*arbol->Draw(camara->vista, camara->proyeccion, camara->posCam, 0, 0, 
 			terreno->Superficie(0, 0), 5, false);*/
 		for (int i = 0; i < 50; i++) {
+			//D3DXMatrixRotationX();
 			arboles[i]->Draw(camara->vista, camara->proyeccion, camara->posCam, this->placeX[i], this->placeZ[i],
 				terreno->Superficie(0, 0) - 3, 15, tipoVista);
+			arbusto1[i]->Draw(camara->vista, camara->proyeccion, camara->posCam, this->placeXG1[i], this->placeZG1[i],
+				terreno->Superficie(0, 0) - 3, 5, tipoVista);
+			arbusto2[i]->Draw(camara->vista, camara->proyeccion, camara->posCam, this->placeXG2[i], this->placeZG2[i],
+				terreno->Superficie(0, 0) - 3, 5, tipoVista);
+			arbusto3[i]->Draw(camara->vista, camara->proyeccion, camara->posCam, this->placeXG3[i], this->placeZG2[i],
+				terreno->Superficie(0, 0) - 3, 5, tipoVista);
 		}
 
-		gato_lampara->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) + 5, camara->posCam, 10.0f, 0, 'A', 0.25);
+		gato_lampara->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) + 1, camara->posCam, 10.0f, 0, 'A', 0.25);
 		hielera->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) - 1, camara->posCam, 10.0f, 0, 'A', 0.25);
 		iphone->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) + 2, camara->posCam, 10.0f, 120, 'X', 0.25);
 		libro_1->Draw(camara->vista, camara->proyeccion, terreno->Superficie(100, 20) - 5, camara->posCam, 10.0f, 0, 'A', 0.75);
@@ -590,13 +684,14 @@ public:
 		/*if (catPicked && bookPicked && nwPicked && phonePicked) {
 
 		}*/
+
 		//Dibujo el vehículo
-		/*if (boatPicked) {
+		if (boatPicked) {
 			 lancha->setPosX(camara->hdveo.x);
 			 lancha->setPosZ(camara->hdveo.z);
 			 lancha->Draw(camara->vista, camara->proyeccion, 
 				 terreno->Superficie(bote->getPosX(), bote->getPosZ()), camara->posCam, 30.0f, XM_PI, 'Y', 5, true, tipoVista);
-		}*/
+		}
 
 		//Dibujo de GUI y mensajes
 		TurnOnAlphaBlending();
@@ -621,6 +716,10 @@ public:
 
 		if (distance <= sphere[2])
 			collition = true;
+
+		if (distance > 25)
+			audioTerminado = false;
+
 		return collition;
 	}
 	//Activa el alpha blend para dibujar con transparencias

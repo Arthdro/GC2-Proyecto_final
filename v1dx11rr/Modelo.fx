@@ -42,10 +42,15 @@ struct PS_Input
 	float3 normal : TEXCOORD1;
 	float3 campos : TEXCOORD2;
 	float specForce : TEXCOORD3;
+	
+	//Niebla
+    float fogFactor : FOG;
 };
 
 PS_Input VS_Main(VS_Input vertex)
 {
+	//Niebla
+    float4 vertexPos;
 	
 	float4 worldPosition;
 
@@ -53,6 +58,9 @@ PS_Input VS_Main(VS_Input vertex)
 
 		vsOut.pos = mul(vertex.pos, worldMatrix);
 		vsOut.pos = mul(vsOut.pos, viewMatrix);
+		//Niebla
+		vertexPos = vsOut.pos;
+	
 		vsOut.pos = mul(vsOut.pos, projMatrix);
 
 		vsOut.tex0 = vertex.tex0;
@@ -65,6 +73,13 @@ PS_Input VS_Main(VS_Input vertex)
 		vsOut.campos = normalize(vsOut.campos);
 
 		vsOut.specForce = specForce;
+	
+		//Niebla
+		float fogStart = -10.0f;
+		float fogEnd = 200.0f;
+	
+		float fogFactor = saturate((fogEnd - vertexPos.z) / (fogEnd - fogStart));
+		vsOut.fogFactor = fogFactor;
 
 	return vsOut;
 }
@@ -108,6 +123,9 @@ float4 PS_Main(PS_Input pix) : SV_TARGET
 	color = color * textureColor;
 
 	color = saturate(color + finalSpec);
+	
+    float4 fogColor = float4(0.412f, 0.443f, 0.612f, 1.0f);
+    color = pix.fogFactor * color + (1.0f - pix.fogFactor) * fogColor;
 
 	return color;
 }

@@ -51,8 +51,13 @@ private:
 	ID3D11Buffer* viewCB;
 	ID3D11Buffer* projCB;
 	ID3D11Buffer* worldCB;
+
+	//Color de Luz Difusa
+
 	D3DXMATRIX viewMatrix;
 	D3DXMATRIX projMatrix;
+
+
 
 	ID3D11Buffer* cameraPosCB;
 	XMFLOAT3 camPos;
@@ -71,9 +76,12 @@ private:
 	
 	float posX;
 	float posZ;
+	
+
 
 public:
 	bool isActive;
+
 	ModeloRR(ID3D11Device* D3DDevice, ID3D11DeviceContext* D3DContext, char* ModelPath, WCHAR* colorTexturePath, WCHAR* specularTexturePath, float _posX, float _posZ)
 	{
 		//copiamos el device y el device context a la clase terreno
@@ -311,7 +319,6 @@ public:
 		{
 			return false;
 		}
-
 		//posicion de la camara
 		D3DXVECTOR3 eye = D3DXVECTOR3(0.0f, 100.0f, 200.0f);
 		//a donde ve
@@ -466,8 +473,6 @@ public:
 		//cantidad de trabajos
 		
 		d3dContext->Draw(m_ObjParser.m_nVertexCount, 0);
-
-
 	}
 };
 #endif

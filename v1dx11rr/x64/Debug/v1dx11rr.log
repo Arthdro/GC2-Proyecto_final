@@ -129,10 +129,10 @@ C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\xnamathvector.i
 C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\xnamathmisc.inl(518,43): warning C4838: conversion from 'unsigned int' to 'INT' requires a narrowing conversion
 C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\xnamathmisc.inl(519,40): warning C4838: conversion from 'unsigned int' to 'INT' requires a narrowing conversion
 C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\xnamathmisc.inl(519,51): warning C4838: conversion from 'unsigned int' to 'INT' requires a narrowing conversion
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\ModeloRR.h(324,64): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\ModeloRR.h(324,1): warning C4305: 'argument': truncation from 'double' to 'FLOAT'
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\ModeloRR.h(386,1): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\ModeloRR.h(421,1): warning C4305: 'argument': truncation from 'double' to 'FLOAT'
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\ModeloRR.h(331,64): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\ModeloRR.h(331,1): warning C4305: 'argument': truncation from 'double' to 'FLOAT'
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\ModeloRR.h(393,1): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\ModeloRR.h(428,1): warning C4305: 'argument': truncation from 'double' to 'FLOAT'
 C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\GUI.h(191,21): warning C4018: '<': signed/unsigned mismatch
 C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\GUI.h(164,33): warning C4101: 'renderTargetViewDesc': unreferenced local variable
 C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\GUI.h(163,24): warning C4101: 'textureDesc': unreferenced local variable
@@ -144,52 +144,58 @@ C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\Text.h(184,33): warning
 C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\Text.h(185,35): warning C4101: 'shaderResourceViewDesc': unreferenced local variable
 C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\Text.h(322,1): warning C4305: 'argument': truncation from 'double' to 'FLOAT'
 C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\Text.h(343,1): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(156,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(158,107): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(158,99): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(163,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(165,106): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(165,99): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(170,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(172,106): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(172,99): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(177,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(179,107): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(179,99): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(183,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(184,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(185,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(186,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(187,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(188,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(189,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(363,1): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(551,103): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(551,86): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(559,81): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(573,1): warning C4305: '-=': truncation from 'double' to 'float'
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(574,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(578,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(581,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(584,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(587,1): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(608,56): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(742,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(743,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(744,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(745,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(753,28): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(754,28): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(755,28): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(756,28): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(765,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(766,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(767,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(768,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(777,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(778,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(779,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(780,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(183,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(185,107): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(185,99): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(190,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(192,106): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(192,99): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(197,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(199,106): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(199,99): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(204,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(206,107): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(206,99): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(210,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(211,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(212,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(213,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(214,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(215,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(216,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(410,1): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(639,103): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(639,86): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(641,108): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(641,89): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(643,108): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(643,89): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(645,108): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(645,89): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(653,81): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(667,1): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(668,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(672,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(675,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(678,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(681,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(703,56): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(841,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(842,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(843,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(844,24): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(852,28): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(853,28): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(854,28): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(855,28): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(864,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(865,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(866,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(867,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(876,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(877,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(878,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\DXRR.h(879,29): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
 C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\TerrenoSkyBill.cpp(146,15): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
 C:\Users\artur\Desktop\GC2\TerrenoSkyBillModGC2\v1dx11rr\TerrenoSkyBill.cpp(239,30): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
